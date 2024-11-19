@@ -1,7 +1,7 @@
 export default function AdditionalInformationForm({ formData, handleChange, inputStyle, positions }) {
     return (
       <div>
-        <h3>Additional Information</h3>
+        <h3 style={{fontSize: '25px', fontWeight: "bold", marginBottom: "1rem"}}>Additional Information</h3>
 
         {/* Languages Spoken */}
         <div style={{ marginBottom: "1rem" }}>

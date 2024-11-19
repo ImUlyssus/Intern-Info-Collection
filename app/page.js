@@ -141,6 +141,7 @@ export default function Home() {
   };
 
   return (
+    <main>
     <div
       style={{
         display: "flex",
@@ -160,11 +161,16 @@ export default function Home() {
           borderRight: "1px solid #ccc",
         }}
       >
-        <Image src={internshipPic} alt="Internship" width="auto" height="auto" />
+        <Image src={internshipPic} alt="Internship" width="auto" height="auto"/>
       </div>
 
       {/* Right Column */}
       <div style={{ flex: 2, padding: "2rem" }}>
+      <div>
+        <h2 style={{textAlign: "center", marginBottom: "20px", fontSize: "30px", fontWeight:'bold', color: "#FFA24C"}}>
+          Internship Application Form
+        </h2>
+      </div>
         {/* Circle Icons */}
         <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
           {[1, 2, 3].map((section) => (
@@ -213,6 +219,7 @@ export default function Home() {
       </div>
       {showDialog && <CustomDialog message={dialogMessage} onClose={handleDialogClose} />}
     </div>
+    </main>
   );
 }
 

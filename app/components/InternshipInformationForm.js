@@ -45,7 +45,7 @@ function InternshipInformationForm({ formData, errors = {}, handleChange, inputS
 
     return (
         <div>
-            <h3>Internship Information</h3>
+            <h3 style={{fontSize: '25px', fontWeight: "bold", marginBottom: "1rem"}}>Internship Information</h3>
             {/* Position Dropdown */}
             <div style={{ marginBottom: "1rem" }}>
                 <label htmlFor="position">Position</label>
