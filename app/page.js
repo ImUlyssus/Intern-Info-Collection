@@ -1,101 +1,230 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
+import internshipPic from "../public/images/Internship.jpg";
+import PersonalInformationForm from "./components/PersonalInformationForm";
+import InternshipInformationForm from "./components/InternshipInformationForm";
+import AdditionalInformationForm from "./components/AdditionalInformationForm";
+import { CustomDialog } from "./components/CustomDialog";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [activeSection, setActiveSection] = useState(1);
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    university: "",
+    linkedin: "",
+    portfolio: "",
+    startDate: "",
+    endDate: "",
+    position: "",
+    languages: "",
+    hobbies: "",
+    additionalComments: "",
+    salary: "",
+    workingCondition: "",
+    location: "",
+  });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const inputStyle = {
+    width: "100%",
+    padding: ".5rem",
+    border: "1px solid #000",
+    borderRadius: "8px",
+    outline: "none",
+    fontSize: "1rem",
+  };
+
+  const handleNext = () => {
+    if (activeSection < 3) {
+      setActiveSection(activeSection + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (activeSection > 1) {
+      setActiveSection(activeSection - 1);
+    }
+  };
+
+  const [errors, setErrors] = useState({
+    firstName: "",
+  lastName: "",
+  phone: "",
+  email: "",
+  university: "",
+  linkedin: "",
+  portfolio: "",
+  middleName: "",
+    startDate: "",
+    endDate: "",
+    position: "",
+    salary: "",
+    workingCondition: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    // Reset the error for the specific field when the user types
+    setErrors({ ...errors, [name]: "" });
+  };
+
+  const validateForm = () => {
+    let formErrors = {};
+    const requiredFields = [
+      "firstName", "lastName", "phone", "email", "university", "linkedin", 
+      "startDate", "endDate", "position", "salary", "workingCondition", "location"
+    ];
+  
+    // Loop through each required field and check if it's empty
+    requiredFields.forEach((field) => {
+      if (!formData[field]) {
+        formErrors[field] = `${field.replace(/([A-Z])/g, ' $1').toLowerCase()} is required`;
+      }
+    });
+  
+    setErrors(formErrors);
+  
+    if (Object.keys(formErrors).length > 0) {
+      let errorMessage = "Please fill out the following required fields:\n";
+      for (let field in formErrors) {
+        errorMessage += `- ${formErrors[field]}\n`;
+      }
+  
+      // Split the message by line breaks and join with <br /> for HTML rendering
+      const formattedMessage = errorMessage.split('\n').map((line, index) => (
+        <span key={index}>
+          {line}
+          <br />
+        </span>
+      ));
+  
+      setDialogMessage(formattedMessage);
+      setShowDialog(true);
+      return false; // Return false if there are any errors
+    }
+  
+    return true; // Return true if no errors
+  };
+  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      // Proceed with form submission logic if all required fields are filled
+      console.log("Form submitted:", formData);
+    }
+  };
+  const handleDialogClose = () => {
+    setShowDialog(false);
+  };
+
+  const renderFormSection = () => {
+    switch (activeSection) {
+      case 1:
+        return <PersonalInformationForm formData={formData} handleChange={handleChange} inputStyle={inputStyle} />;
+      case 2:
+        return <InternshipInformationForm formData={formData} handleChange={handleChange} inputStyle={inputStyle} errors={errors} />;
+      case 3:
+        return <AdditionalInformationForm formData={formData} handleChange={handleChange} inputStyle={inputStyle} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        minHeight: "100vh",
+        background: "#fff",
+        color: "#000",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      {/* Image Column */}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderRight: "1px solid #ccc",
+        }}
+      >
+        <Image src={internshipPic} alt="Internship" width="auto" height="auto" />
+      </div>
+
+      {/* Right Column */}
+      <div style={{ flex: 2, padding: "2rem" }}>
+        {/* Circle Icons */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+          {[1, 2, 3].map((section) => (
+            <div
+              key={section}
+              onClick={() => setActiveSection(section)}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: activeSection === section ? "#000" : "#ccc",
+                color: activeSection === section ? "#fff" : "#000",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                margin: "0 10px",
+                fontWeight: "bold",
+              }}
+            >
+              {section}
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Form Section */}
+        <div>{renderFormSection()}</div>
+
+        {/* Navigation Buttons */}
+        <div style={{ marginTop: "2rem", display: "flex", justifyContent: "space-between" }}>
+          {activeSection > 1 && (
+            <button type="button" onClick={handlePrevious} style={buttonStyle}>
+              Previous
+            </button>
+          )}
+          {activeSection < 3 ? (
+            <button type="button" onClick={handleNext} style={buttonStyle}>
+              Next
+            </button>
+          ) : (
+            <button type="submit" onClick={handleSubmit} style={buttonStyle}>
+              Submit
+            </button>
+          )}
+        </div>
+      </div>
+      {showDialog && <CustomDialog message={dialogMessage} onClose={handleDialogClose} />}
     </div>
   );
 }
+
+// Button Style
+const buttonStyle = {
+  padding: ".75rem 2rem",
+  backgroundColor: "#000",
+  color: "#fff",
+  border: "none",
+  cursor: "pointer",
+  borderRadius: "5px",
+  fontSize: "1rem",
+};
+
+
