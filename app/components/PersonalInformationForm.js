@@ -208,63 +208,6 @@ export default function PersonalInformationForm({ formData, handleChange, inputS
                     </p>
                     {errors.portfolio && <p style={{ color: "red", fontSize: "0.9rem" }}>{errors.portfolio}</p>}
                 </div>
-                {/* CV/Resume */}
-                {/* <div style={{ marginBottom: "1rem" }}>
-                    <label htmlFor="resume" style={{ display: "block", marginBottom: ".5rem" }}>
-                        CV/Resume (PDF only)
-                    </label>
-                    <input
-                        type="file"
-                        name="resume"
-                        id="resume"
-                        accept=".pdf" // Only accept PDF files
-                        onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                                if (file.type === "application/pdf") {
-                                    handleChange({ target: { name: "resume", value: file } }); // Update formData
-                                } else {
-                                    alert("Only PDF files are allowed!");
-                                    e.target.value = ""; // Reset the input field
-                                }
-                            }
-                        }}
-                        required
-                        style={inputStyle}
-                    />
-                    {errors.resume && (
-                        <p style={{ color: "red", fontSize: "0.9rem" }}>{errors.resume}</p>
-                    )}
-                </div> */}
-                {/* Transcript Upload */}
-                {/* <div style={{ marginBottom: "1rem" }}>
-                    <label htmlFor="transcript" style={{ display: "block", marginBottom: ".5rem" }}>
-                        Transcript (PDF only)
-                    </label>
-                    <input
-                        type="file"
-                        name="transcript"
-                        id="transcript"
-                        accept=".pdf" // Only accept PDF files
-                        onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                                if (file.type === "application/pdf") {
-                                    handleChange({ target: { name: "transcript", value: file } }); // Update formData
-                                } else {
-                                    alert("Only PDF files are allowed!");
-                                    e.target.value = ""; // Reset the input field
-                                }
-                            }
-                        }}
-                        required
-                        style={inputStyle}
-                    />
-                    {errors.transcript && (
-                        <p style={{ color: "red", fontSize: "0.9rem" }}>{errors.transcript}</p>
-                    )}
-                </div> */}
-
             </div>
         </div>
     );

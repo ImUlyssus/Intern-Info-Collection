@@ -1,10 +1,20 @@
 import React from 'react';
 
-export function CustomDialog({ message, onClose }) {
+export function CustomDialog({ message, type, onClose }) {
+  // Dynamic styles for different types of messages
+  const titleStyle = {
+    color: type === 'success' ? '#28a745' : '#FF0000',
+    fontSize: '20px',
+    fontWeight: 'bold',
+    padding: '5px',
+  };
+
+  const titleText = type === 'success' ? 'Success' : 'Missing Information';
+
   return (
     <div style={dialogOverlayStyle}>
       <div style={dialogBoxStyle}>
-        <h4 style={{ color: '#FF0000', fontSize: "20px", fontWeight: "bold", padding: "5px" }}>Missing Information</h4>
+        <h4 style={titleStyle}>{titleText}</h4>
         <p>{message}</p>
         <button onClick={onClose} style={buttonStyle}>
           Close
@@ -43,4 +53,5 @@ const buttonStyle = {
   border: 'none',
   cursor: 'pointer',
   borderRadius: '5px',
+  marginTop: '1rem'
 };

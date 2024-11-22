@@ -1,4 +1,4 @@
-function InternshipInformationForm({ formData, errors = {}, handleChange, inputStyle }) {
+function InternshipInformationForm({ formData, errors = {}, handleChange, inputStyle, setErrors }) {
     // Define the working conditions options and positions
     const workingConditions = [
         "Full time (5 days/week)",
